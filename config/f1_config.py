@@ -12,7 +12,6 @@ API_BASE_URL = "https://api.jolpi.ca/ergast/f1"
 
 def add_ingestion_metadata(df):
   return (
-    df
-      .withColumn("ingestion_date", F.current_timestamp())
-      .withColumn("source_file", F.col('_metadata.file_path'))
+    df.withColumn("ingestion_date", F.current_timestamp())
+      .withColumn("source_file", F.col("_metadata.file_path"))
   )
