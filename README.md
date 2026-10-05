@@ -8,7 +8,7 @@ medallion architecture, orchestrated as a scheduled Databricks Job.
 
 
 This is my second data engineering portfolio project, and it's deliberately built
-differently from my [Olist ecommerce pipeline](PASTE_OLIST_REPO_URL_HERE). Where Olist
+differently from my [Olist ecommerce pipeline](https://github.com/MGulled/ecommerce-olist-databricks.git). Where Olist
 uses Databricks Lakeflow Declarative Pipelines and dbt, this project uses plain
 PySpark notebooks orchestrated with an explicit Databricks Job task graph, and
 infrastructure provisioned entirely with Terraform instead of Databricks Asset
