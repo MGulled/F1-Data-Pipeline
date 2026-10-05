@@ -4,9 +4,10 @@ An end-to-end batch data pipeline built on Azure Databricks and Terraform — pu
 Formula 1 race data from the public Jolpica-F1 API through a bronze/silver/gold
 medallion architecture, orchestrated as a scheduled Databricks Job.
 
-<!-- <img width="916" height="385" alt="architecture diagram or job graph" src="PASTE_IMAGE_URL_HERE" /> -->
+<img width="1157" height="687" alt="bilde" src="https://github.com/user-attachments/assets/57dc5708-7f99-408c-81c5-562cebef5e3d" />
 
-This is my third data engineering portfolio project, and it's deliberately built
+
+This is my second data engineering portfolio project, and it's deliberately built
 differently from my [Olist ecommerce pipeline](PASTE_OLIST_REPO_URL_HERE). Where Olist
 uses Databricks Lakeflow Declarative Pipelines and dbt, this project uses plain
 PySpark notebooks orchestrated with an explicit Databricks Job task graph, and
@@ -65,23 +66,15 @@ The pipeline follows a **bronze → silver → gold** medallion architecture:
 - `dim_races` is enriched with circuit name and country via a join to `dim_circuits`,
   since that's a common slice for F1 analysis
 
-```mermaid
-flowchart LR
-    API[Jolpica-F1 API] -->|paginated requests| ADLS[(ADLS Gen2 staging container)]
-    ADLS --> Bronze[Bronze: nested, schema-enforced]
-    Bronze --> Silver[Silver: flattened, typed, cleaned]
-    Silver --> Gold[Gold: star schema]
-    Gold --> PowerBI[Power BI - planned]
-```
 
 ## Orchestration: Databricks Job
+<img width="1120" height="640" alt="Screenshot 2026-09-28 041526" src="https://github.com/user-attachments/assets/05635251-848f-4af1-a752-ffa30d0cdb21" />
 
 A single Databricks Job, `f1_pipeline`, runs all 15 notebooks with explicit task
 dependencies: each silver task depends on its own bronze task, each gold dimension
 depends on its silver source(s), and `fact_results` depends on every dimension plus
 silver results.
 
-<!-- <img width="1327" height="702" alt="job task graph" src="PASTE_JOB_GRAPH_IMAGE_URL_HERE" /> -->
 
 The job runs weekly, Mondays at 08:00 Europe/Oslo, after the Sunday race's results are
 available. Every layer writes with `overwrite` rather than `append`, since each run
@@ -220,9 +213,3 @@ spark.sql("""
 """).show()
 ```
 
-### 4. Connect Power BI (planned)
-
-Not yet built for this project. The gold schema (`f1_workspace.gold`) is structured as
-a standard star schema and is ready to connect via the Azure Databricks connector,
-following the same pattern as the [Olist project's Power BI
-setup](PASTE_OLIST_REPO_URL_HERE#6-connect-power-bi).
